@@ -2,49 +2,51 @@ DictParser
 ==========
 
 DictParser is a tiny library
-for decoding rudimentary dictionary-like objects
-from a stream of bytes.
-The library contains two implementations,
-one in Python
-and one in C++.
-This document describes the format of an encoded dictionary object.
+	for decoding rudimentary dictionary-like objects
+	from a stream of bytes.
+	The library contains two implementations,
+	one in Python
+	and one in C++.
+	This document describes the format of an encoded dictionary object.
 
 The Encoding
 ------------
 
-The central idea is a _list of properties_,
-  similar to a `dict` in Python.
-  It's not not the same
-  as repeated keys are allowed.
-  We'll reuse the name _dictionary_,
-  or _dict_ for short.
+We define _dictionary_ (or _dict_ for short)
+	to mean a set of _properties_
+	where each _property_ has a _name_ and a _value_.
+	The set of properties may or may not be ordered
+	and property names may or may not repeat;
+	it's up to the user to define.
 
-A _dictionary_ is a (possibly ordered) sequence of _properties_
+An _encoded dictionary_ is an ordered sequence of _encoded properties_
 	enclosed in curly braces:
 	`{`, `}`.
 	The _empty dictionary_ is the string '`{}`'.
 	The significance of the ordering of properties is user defined.
 
-There are _simple_ and _binary_ properties.
+An _encoded property_ is either _simple_ or _binary_.
 
 A _simple property_
-	has a _name_ and a _value_ separated by a colon
-	and is terminated by a semicolon,
+	has a _name_ and a _value_
+	(each a sequence of bytes)
+	separated by a colon
+	and terminated by a semicolon,
 	e.g., '`name:value;`'.
 	A simple property name must not be empty
-	and must not contain parentheses or colons: `(`, `)` and `:`.
-	A simple property value must not contain a semicolon: `;`.
+	and must not contain parentheses (`(`, `)`) or colon (`:`).
+	A simple property value must not contain a semicolon (`;`).
 
 A _binary property_
 	has the same structure as a simple property,
 	but its name ends with the _length_ (in 8 bit bytes) of the value,
-	in parentheses,
-	e.g., '`hello(7): world!;`'.</p>
+	in parentheses (`(`, `)`),
+	e.g., '`hello(7): world!;`' and '`hello(6):world!;`'.
+	A binary property value may contain any character.
 
-As mentioned,
-	property names may be repeated,
+Property names may be repeated,
 	so that '`{a:x;a:y;a:z;}`'
-	is a valid _dict_ with three distinct properties.
+	is a valid _dictionary_ with three distinct properties.
 	The interpretation of properties with identical names is user defined.
 
 Note that white space characters are interpreted as any other characters;
