@@ -52,3 +52,54 @@ Property names may be repeated,
 Note that white space characters are interpreted as any other characters;
 	any line feed, space, tab, etc, will be interpreted verbatim,
 	as part of a property name or value.
+
+
+The API
+-------
+
+This library provides an interface
+	to decode an _encoded dictionary_
+	one property at a time.
+	The interface is pretty straight forward.
+	You instantiate a `DictParser`
+	with a `stream`
+	and call `getNextProperty()`
+	until all available (or desired?) properties
+	have been read.
+	The parser instance will throw an exception
+	on invalid input
+	or stream errors.
+
+Here's an example of how to parse
+	the contents of a file
+	in Python:
+
+```python
+import DictParser
+import io
+
+f = io.open("dict.txt", mode="r+b")
+parser = DictParser.DictParser(f)
+while True:
+  prop = parser.getNextProperty()
+  if not prop: break
+  print "%s: %s" % (prop.name(), prop.value())
+```
+
+Here's the same example in C++:
+
+```c++
+#include <fstream>
+#include "DictParser.h"
+
+int main(int argc, char *argv[]) {
+  std::fstream stream("dict.txt", std::ios::in|std::ios::binary);
+  DictParser parser(stream);
+  DictParser::Property prop;
+  while (parser.getNextProperty(prop)) {
+    std::cout << prop.name() << ": " << prop.value() << std::endl;
+  }
+  std::cout << std::flush;
+  return 0;
+}
+```
