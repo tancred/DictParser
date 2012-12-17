@@ -46,7 +46,7 @@ A _binary property_
 
 Property names may be repeated,
 	so that '`{a:x;a:y;a:z;}`'
-	is a valid _dictionary_ with three distinct properties.
+	is a valid _encoded dictionary_ with three distinct properties.
 	The interpretation of properties with identical names is user defined.
 
 Note that white space characters are interpreted as any other characters;
