@@ -9,6 +9,12 @@ DictParser is a tiny library
 	and one in C++.
 	This document describes the format of an encoded dictionary object.
 
+Acknowledgements
+----------------
+
+A big thanks to my former employer [Nordic River](http://nordicriver.com),
+	for letting me share this code.
+
 The Encoding
 ------------
 
