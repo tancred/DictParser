@@ -2,13 +2,16 @@ import unittest
 import io
 from DictParser import DictParser
 
+
 def suite():
     return unittest.TestSuite([
         unittest.TestLoader().loadTestsFromTestCase(DictParserTest),
     ])
 
+
 def stream(text):
-    return io.BytesIO(bytes(text));
+    return io.BytesIO(bytes(text))
+
 
 class DictParserTest(unittest.TestCase):
 
@@ -108,8 +111,8 @@ class DictParserTest(unittest.TestCase):
         prop = parser.getNextProperty()
         self.assertEqual("n", prop.name())
         self.assertEqual("123", prop.value())
-    
-    def assertParseError(self,input,expectedMessage):
+
+    def assertParseError(self, input, expectedMessage):
         try:
             DictParser(stream(input)).getNextProperty()
         except DictParser.ParseError as perr:
@@ -118,7 +121,7 @@ class DictParserTest(unittest.TestCase):
         except Exception as ex:
             self.fail("expected ParseError('%s') but got >>%s<<" % (expectedMessage, str(ex)))
         self.fail("expected ParseError('%s') but nothing raised" % (expectedMessage))
-    
+
     def testThrowsOnMissingStartCurly(self):
         self.assertParseError("name:val;}", "missing initial '{'")
 
